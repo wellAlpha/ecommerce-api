@@ -15,34 +15,31 @@ import org.springframework.web.bind.annotation.RestController;
 import com.alpha.bookStore.entities.Categoria;
 import com.alpha.bookStore.entities.Livro;
 import com.alpha.bookStore.repositories.LivroRepository;
+import com.alpha.bookStore.services.LivroService;
 
 @RestController
 @RequestMapping("/api/bookstore/admin/livro")
-public class LivroControllerAPI {
+public class LivroController {
 	@Autowired
-	LivroRepository livroRepository;
+	LivroService livroService;
+	
 	@GetMapping("/list")
 	public List<Livro> list (){
-		return livroRepository.findAll();
+		return livroService.list();
 	}
 	
 	@PostMapping("/create")
 	public Livro create(@RequestBody Livro livro) {
-		return livroRepository.save(livro);
+		return livroService.create(livro);
 	}
 	
 	@PutMapping("/update")
 	public Livro update(@RequestBody Livro livro) {
-		return livroRepository.save(livro);
+		return livroService.update(livro);
 	}
 	
 	@DeleteMapping("/delete/{id}")
-	public void delete(@PathVariable Integer id) {
-		var livro = livroRepository.findById(id).get();
-		
-		livro.setAtivo(false);
-		livro.setDestaque(false);
-		
-		livroRepository.save(livro);
+	public void delete(@PathVariable Integer id) {		
+		livroService.delete(id);
 	}
 }

@@ -13,39 +13,35 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.alpha.bookStore.entities.Autor;
+import com.alpha.bookStore.entities.Editora;
 import com.alpha.bookStore.repositories.AutorRepository;
+import com.alpha.bookStore.repositories.EditoraRepository;
+import com.alpha.bookStore.services.EditoraService;
 
 @RestController
-@RequestMapping("/api/bookstore/admin/autor")
-public class AutorControllerAPI {
+@RequestMapping("/api/bookstore/admin/editora")
+public class EditoraController {
 	@Autowired
-	AutorRepository autorRepository;
+	EditoraService editoraService;
 
 	@GetMapping("/list")
-	public List<Autor> list() {
-		return autorRepository.findAll();
+	public List<Editora> list() {
+		return editoraService.list();
 	}
 
 	@PostMapping("/create")
-	public Autor create(@RequestBody Autor autor) {
-		return autorRepository.save(autor);
+	public Editora create(@RequestBody Editora editora) {
+		return editoraService.create(editora);
 	}
 
 	@PutMapping("/update/{id}")
-	public Autor update(@PathVariable Integer id, @RequestBody Autor autor) {
-		var oldAutor = autorRepository.findById(id).get();
+	public Editora update(@PathVariable Integer id, @RequestBody Editora editora) {
 		
-		oldAutor.setNome(autor.getNome());
-		
-		return autorRepository.save(oldAutor);
+		return editoraService.update(id, editora);
 	}
 	
 	@DeleteMapping("/delete/{id}")
 	public void delete(@PathVariable Integer id) {
-		var autor = autorRepository.findById(id).get();
-
-		autor.setAtivo(false);
-		
-		autorRepository.save(autor);
+		editoraService.delete(id);
 	}
 }
